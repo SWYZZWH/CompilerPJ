@@ -38,12 +38,50 @@ int main(int argc, char** argv) {
                 // overflow? (see file test20.pcat)
                 type = "integer";
                 token = yytext;
+		try{
+			stoi(yytext);
+		}
+		catch(invalid_argument& e){
+			cout<<"invalid_argument"<<endl;
+			token = "";
+			type = "invaild error";
+			error_num++;
+			break;
+		}
+		catch(out_of_range& e){
+			//cout<<"out of range"<<endl;
+			token = "";
+			type = "overflow error";
+			error_num++;
+			break;
+		}
+		catch(...){
+		};
 		token_num++;
                 break;
             case REAL:
 		// overflow?
                 type = "real";
                 token = yytext;
+		try{
+			stoi(yytext);
+		}
+		catch(invalid_argument& e){
+			cout<<"invalid_argument"<<endl;
+			token = "";
+			type = "invalid error";
+			error_num++;
+			break;
+		}
+		catch(out_of_range& e){
+			//cout<<"out of range"<<endl;
+			token = "";
+			type = "overflow error";
+			error_num++;
+			break;
+		}
+		catch(...){
+		};
 		token_num++;
                 break;
 	    case WS:
