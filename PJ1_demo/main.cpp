@@ -34,7 +34,7 @@ int main(int argc, char** argv) {
 	
         if (n == T_EOF) break;
         switch(n) {
-            case INTEGER:
+        case INTEGER:
                 // overflow? (see file test20.pcat)
                 type = "integer";
                 token = yytext;
@@ -59,7 +59,7 @@ int main(int argc, char** argv) {
 		};
 		token_num++;
                 break;
-            case REAL:
+        case REAL:
 		// overflow?
                 type = "real";
                 token = yytext;
@@ -83,7 +83,7 @@ int main(int argc, char** argv) {
 		catch(...){
 		};
 		token_num++;
-                break;
+            break;
 	    case WS:
                 type = "whitespace";
                 continue;
@@ -98,10 +98,23 @@ int main(int argc, char** argv) {
 		token = yytext;
                 token_num++;
 		break;
-             case STRING:
-                // overflow?
+            case STRING:
+                //TAB in a str is illeagal
 		type = "string";
 		token = yytext;
+		//cout<<"length of the string:"<<strlen(yytext)<<endl;
+		if(strlen(yytext)>257){
+			type = "overlength string";
+			error_num++;
+			break;
+		}
+		for(int i = 0; i < strlen(yytext); i++){
+			if(yytext[i] == '\t'){
+				type = "error_string with tab";
+				error_num++;
+				break;
+			}
+		}
                 token_num++;
 		break;
              case OPERATOR:
