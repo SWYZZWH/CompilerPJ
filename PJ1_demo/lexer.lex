@@ -12,15 +12,15 @@ LETTER      [A-Za-z]
 WS          [ ]+
 RESERVED    AND|ELSIF|LOOP|PROGRAM|VAR|ARRAY|END|MOD|READ|WHILE|BEGIN|EXIT|NOT|RECORD|WRITE|BY|FOR|OF|RETURN|DIV|IF|OR|THEN|DO|IN|OUT|TO|ELSE|IS|PROCEDURE|TYPE
 ID          {LETTER}({LETTER}|{DIGIT})*
-STRING      \"[^\"]*\"
+STRING      \"[^\n\"]*\"
 OPERATOR    \:=|\+|\-|\*|\/|<|<=|>|>=|=|<>
 DELIMITER   \:|;|,|'.'|\(|\)|\[|\]|\{|\}|\[<|>\]|\\
-COMMENT     \(\*[^\)\*]*\*\)
+COMMENT     \(\*[^\*]*[\*]+([^\*\)][^\*]*[\*]+)*\)
 TAB         \t
 ENTER       \n
 ERRORSTR    ^\"(.*)([\"]+)(.*)\"$
 HALFSTR     \"([^\n\"]*)
-HALFCOMMENT \(\*([^(\(\*)]*)
+HALFCOMMENT (\(\*)|(\*\))
 ERROR       .
 
 %%

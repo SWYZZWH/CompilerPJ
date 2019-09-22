@@ -16,5 +16,6 @@
 #define TAB       12
 #define ENTER     13
 #define BOOLEAN   14
+#define HALFRCOMMENT 15
 #define ERROR    -1
 #endif

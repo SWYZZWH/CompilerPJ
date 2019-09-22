@@ -157,6 +157,7 @@ int main(int argc, char** argv) {
 		break;
 	     case HALFCOMMENT:
 		type = "unterminated comment";
+		token = yytext;
 		error_num++;
 		break;
 	     case ENTER:
