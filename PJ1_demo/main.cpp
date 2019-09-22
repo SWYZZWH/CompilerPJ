@@ -33,6 +33,7 @@ int main(int argc, char** argv) {
     int col = 1;
     while (true) {
         int n = yylex();
+	int show = 1;
         string type = "";
         string token = "";
 	
@@ -94,13 +95,9 @@ int main(int argc, char** argv) {
 		token_num++;
 		break;
 	    case WS:
+		show = 0;
                 type = "whitespace";
-		col += strlen(yytext);
-                continue;
-	    case TAB:
-                type = "\\t";
-		col += 4;//take tab as 4 spaces
-                continue;
+                break;
 	    case RESERVED:
 		type = "reserved";
 		token = yytext;
@@ -137,6 +134,7 @@ int main(int argc, char** argv) {
                 token_num++;
 		break;
 	     case HALFSTR:
+		show = 0;
 		type = "unterminated string";
 		error_num++;
 		break;
@@ -152,28 +150,35 @@ int main(int argc, char** argv) {
 		break;
 	     case COMMENT:
 	        type = "comment";
-		token = yytext;
-                //token_num++;
+		show = 0;
+		//token = yytext;
 		break;
 	     case HALFCOMMENT:
 		type = "unterminated comment";
 		token = yytext;
+		show = 0;
 		error_num++;
 		break;
-	     case ENTER:
- 		type = "enter";
-		token = "\\n";
-		row++;
-		col = 1;
-		continue;
             // other cases?
             default:
+		show = 0;
                 type = "error";
                 token = yytext;
 		error_num++;
         }
-        cout<<setw(5)<<left<<row<<setw(5)<<left<<col<<setw(20)<<left<<type<<token<<endl;
-	col += token.size();
+	if(show)
+        	cout<<setw(5)<<left<<row<<setw(5)<<left<<col<<setw(20)<<left<<type<<token<<endl;
+	for(int i = 0; i < strlen(yytext); i++){
+			if(yytext[i] == '\n'){
+				row++;
+				col = 1;
+			}else if(yytext[i] == '\t'){
+				col += 4;
+			}
+			else
+				col++;
+	}
+	show = 1;
     }
     
     // count num of tokens and errors? 
