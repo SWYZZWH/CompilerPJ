@@ -8,7 +8,13 @@
 #define RESERVED  4
 #define ID        5
 #define STRING    6
-#define OPERATOR  7
-#define DELIMITER 8
+#define HALFSTR   7
+#define OPERATOR  8
+#define DELIMITER 9
+#define COMMENT   10
+#define HALFCOMMENT 11
+#define TAB       12
+#define ENTER     13
+#define BOOLEAN   14
 #define ERROR    -1
 #endif

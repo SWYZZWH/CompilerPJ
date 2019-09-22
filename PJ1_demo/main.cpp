@@ -27,6 +27,10 @@ int main(int argc, char** argv) {
 
     int token_num = 0;
     int error_num = 0;
+
+    //caculate the index of rows and column
+    int row = 1;
+    int col = 1;
     while (true) {
         int n = yylex();
         string type = "";
@@ -84,8 +88,18 @@ int main(int argc, char** argv) {
 		};
 		token_num++;
             break;
+            case BOOLEAN:
+		type = "boolean";
+		token = yytext;
+		token_num++;
+		break;
 	    case WS:
                 type = "whitespace";
+		col += strlen(yytext);
+                continue;
+	    case TAB:
+                type = "\\t";
+		col += 4;//take tab as 4 spaces
                 continue;
 	    case RESERVED:
 		type = "reserved";
@@ -96,6 +110,11 @@ int main(int argc, char** argv) {
 		// overflow?
 		type = "ID";
 		token = yytext;
+		if(strlen(yytext)>257){
+			type = "overlength ID";
+			error_num++;
+			break;
+		}
                 token_num++;
 		break;
             case STRING:
@@ -117,6 +136,10 @@ int main(int argc, char** argv) {
 		}
                 token_num++;
 		break;
+	     case HALFSTR:
+		type = "unterminated string";
+		error_num++;
+		break;
              case OPERATOR:
 		type = "operator";
 		token = yytext;
@@ -127,13 +150,29 @@ int main(int argc, char** argv) {
 		token = yytext;
                 token_num++;
 		break;
+	     case COMMENT:
+	        type = "comment";
+		token = yytext;
+                //token_num++;
+		break;
+	     case HALFCOMMENT:
+		type = "unterminated comment";
+		error_num++;
+		break;
+	     case ENTER:
+ 		type = "enter";
+		token = "\\n";
+		row++;
+		col = 1;
+		continue;
             // other cases?
             default:
                 type = "error";
                 token = yytext;
 		error_num++;
         }
-        cout<<setw(5)<<left<<"rpos"<<setw(5)<<left<<"cpos"<<setw(20)<<left<<type<<token<<endl;
+        cout<<setw(5)<<left<<row<<setw(5)<<left<<col<<setw(20)<<left<<type<<token<<endl;
+	col += token.size();
     }
     
     // count num of tokens and errors? 
