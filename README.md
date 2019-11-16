@@ -6,7 +6,7 @@
 
 ### 环境配置
 
-1. linux，以下以ubuntu为例
+1. linux，以下以ubuntu为
 2. `sudo apt-get install flex`
 3. `sudo apt-get install bison`
 
